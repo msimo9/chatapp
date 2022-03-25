@@ -1,24 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import LoginForm from './components/LoginForm';
+import { useState } from 'react';
+import ChatApp from './components/ChatApp';
+import { Provider } from 'react-redux'
+import { store } from './redux';
 
 function App() {
+  const [loginVis, setLoginVis] = useState(true);
+  const toggleLoginVis = () => {setLoginVis(!loginVis)}
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className='w-full h-screen'>
+        {
+          loginVis &&
+          <LoginForm toggleLoginVis={toggleLoginVis} />
+        }
+        {
+          !loginVis &&
+          <ChatApp signOut={toggleLoginVis} />
+        }
+      </div>
+    </Provider>
   );
 }
 
