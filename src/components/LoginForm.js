@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {handleSignUp} from '../firebase/writes.js';
 import {useDispatch} from 'react-redux'
 import { setActiveMenuElement} from '../redux';
+import BirthDatePicker from './BirthDatePicker.js';
 
 const Divider = () => (<div className='w-4/5 my-4 h-[1px] bg-white transition-all duration-300'></div>)
 
@@ -72,11 +73,22 @@ const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword,
     const togglePassword = () => {
         setPasswordVis(!passwordVis)
     }
+    const [additionalInfo, setAdditionalInfo] = useState(false);
+    const toggleAdditionalInfo = () => {setAdditionalInfo(!additionalInfo);}
+
+    const [day, setDay] = useState(31);
+    const [month, setMonth] = useState(12);
+    const [year, setYear] = useState(2022);
+    const [usern, setUsern] = useState("");
+    const [fullN, setFullN] = useState(""); 
+    const birthDate = day+". "+month+". "+year;
+
+    if(!additionalInfo){
     return(
         <div className='w-96 h-4/5 relative bg-primary rounded-xl shadow-2xl drop-shadow-md hover:drop-shadow-2xl transition-all duration-300 flex pt-20 flex-col items-center'>
             <span className='text-white text-xl font-thin mb-4'>signup now!</span>
 
-            <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder='username or email' className='w-4/5 my-4 h-10 px-2 flex relative justify-center items-center bg-white text-primary rounded-3xl hover:rounded-md transition-all duration-300'/>
+            <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder='email' className='w-4/5 my-4 h-10 px-2 flex relative justify-center items-center bg-white text-primary rounded-3xl hover:rounded-md transition-all duration-300'/>
 
 
             <div className='w-full h-12 flex justify-center items-center mt-4 mb-2'>
@@ -96,10 +108,23 @@ const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword,
 
             <Divider />
 
-            <div onClick={() => {handleSignUp(username, password); toggleLoginVis(); }} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer mt-4'>
-                <span className='text-primary font-bold'>sign up!</span>
-            </div>
+            <div onClick={() => {
+                    if(password.length > 0 && username.length >= 3 && password === password_r){
+                        /*handleSignUp(username, password);*/ 
+                        toggleAdditionalInfo(); }
+                    }                    
+                }
+                
+                className=
+                {password.length > 0 && username.length >= 3 && password === password_r ?
+                'h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer mt-4'
+                : 'h-10 w-2/5 flex relative justify-center items-center bg-gray-400 text-primary rounded-3xl hover:rounded-md transition-all duration-300 mt-4'
+                }
 
+            >
+                <span className='text-primary font-bold'>continue!</span>
+            </div>
+            
             <div className='flex absolute bottom-8 w-4/5 text-white text-sm font-thin'>
                 <span onClick={() => toggleSignUp()} className='text-secondary ml-1 font-bold cursor-pointer'>
                     go back
@@ -107,6 +132,30 @@ const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword,
             </div>
         </div>
     )
+    }else if(additionalInfo){
+        return(
+        <div className='w-96 h-4/5 relative bg-primary rounded-xl shadow-2xl drop-shadow-md hover:drop-shadow-2xl transition-all duration-300 flex pt-20 flex-col items-center'>
+            <span className='text-white text-xl font-thin mb-4'>signup now!</span>
+
+            <input value={usern} onChange={(e) => setUsern(e.target.value)} placeholder='username' className='w-4/5 my-2 h-10 px-2 flex relative justify-center items-center bg-white text-primary rounded-3xl hover:rounded-md transition-all duration-300'/>
+            
+            <input value={fullN} onChange={(e) => setFullN(e.target.value)} placeholder='full name' className='w-4/5 my-2 h-10 px-2 flex relative justify-center items-center bg-white text-primary rounded-3xl hover:rounded-md transition-all duration-300'/>
+
+            <BirthDatePicker setDay={setDay} setMonth={setMonth} setYear={setYear} />
+
+            <Divider />
+            <div onClick={() => {handleSignUp(username, password, usern, fullN, birthDate); toggleLoginVis(); }} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer mt-4'>
+                <span className='text-primary font-bold'>sign up!</span>
+            </div>
+
+            <div className='flex absolute bottom-8 w-4/5 text-white text-sm font-thin'>
+                <span onClick={() => toggleAdditionalInfo()} className='text-secondary ml-1 font-bold cursor-pointer'>
+                    go back
+                </span>.
+            </div>
+        </div>
+        )
+    }
 }
 
 const LoginForm = ({toggleLoginVis}) => {
