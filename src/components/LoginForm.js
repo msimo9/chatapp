@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import {handleSignUp} from '../firebase/writes.js';
+import {handleLogin} from '../firebase/reads.js';
 import {useDispatch} from 'react-redux'
-import { setActiveMenuElement} from '../redux';
+import { setActiveMenuElement, setUserID} from '../redux';
 import BirthDatePicker from './BirthDatePicker.js';
 
 const Divider = () => (<div className='w-4/5 my-4 h-[1px] bg-white transition-all duration-300'></div>)
@@ -30,7 +31,7 @@ const StartingScreen = ({toggleLogIn, toggleSignUp}) => {
     )
 }
 
-const LogInForm = ({toggleLogIn, username, password, setUsername, setPassword, toggleLoginVis}) => {
+const LogInForm = ({toggleLogIn, username, password, setUsername, setPassword, toggleLoginVis, saveUserID}) => {
     const [passwordVis, setPasswordVis] = useState(false);
     const togglePassword = () => {
         setPasswordVis(!passwordVis)
@@ -55,7 +56,7 @@ const LogInForm = ({toggleLogIn, username, password, setUsername, setPassword, t
             
             <Divider />
 
-            <div onClick={() => toggleLoginVis()} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer'>
+            <div onClick={() => handleLogin(username, password, toggleLoginVis, saveUserID)} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer'>
                 <span className='text-primary font-bold'>log in!</span>
             </div>
 
@@ -68,7 +69,7 @@ const LogInForm = ({toggleLogIn, username, password, setUsername, setPassword, t
     )
 }
 
-const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword, password_r, setPassword_r, toggleLoginVis}) => {
+const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword, password_r, setPassword_r, toggleLoginVis, saveUserID}) => {
     const [passwordVis, setPasswordVis] = useState(false);
     const togglePassword = () => {
         setPasswordVis(!passwordVis)
@@ -144,7 +145,7 @@ const SignUpForm = ({toggleSignUp, username, password, setUsername, setPassword,
             <BirthDatePicker setDay={setDay} setMonth={setMonth} setYear={setYear} />
 
             <Divider />
-            <div onClick={() => {handleSignUp(username, password, usern, fullN, birthDate); toggleLoginVis(); }} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer mt-4'>
+            <div onClick={() => {handleSignUp(username, password, usern, fullN, birthDate, saveUserID); toggleLoginVis(); }} className='h-10 w-2/5 flex relative justify-center items-center bg-secondary text-primary rounded-3xl hover:rounded-md transition-all duration-300 hover:cursor-pointer mt-4'>
                 <span className='text-primary font-bold'>sign up!</span>
             </div>
 
@@ -170,6 +171,10 @@ const LoginForm = ({toggleLoginVis}) => {
     
     const dispatch = useDispatch();
     dispatch(setActiveMenuElement("Home"));
+    
+    const saveUserID = (userID) => {
+        dispatch(setUserID(userID));
+    }
 
     return (
         <div className='w-full h-full flex justify-center items-center'>
@@ -179,11 +184,11 @@ const LoginForm = ({toggleLoginVis}) => {
             }
             {
                 logInVisibility &&
-                <LogInForm toggleLogIn={toggleLogIn} username={username} password={password} setUsername={setUsername} setPassword={setPassword} toggleLoginVis={toggleLoginVis} />
+                <LogInForm toggleLogIn={toggleLogIn} username={username} password={password} setUsername={setUsername} setPassword={setPassword} toggleLoginVis={toggleLoginVis} saveUserID={saveUserID} />
             }
             {
                 signUpVisibility &&
-                <SignUpForm toggleSignUp={toggleSignUp} username={username} password={password} setUsername={setUsername} setPassword={setPassword} password_r={password_r} setPassword_r={setPassword_r} toggleLoginVis={toggleLoginVis} />
+                <SignUpForm toggleSignUp={toggleSignUp} username={username} password={password} setUsername={setUsername} setPassword={setPassword} password_r={password_r} setPassword_r={setPassword_r} toggleLoginVis={toggleLoginVis} saveUserID={saveUserID} />
             }
         </div>
     )

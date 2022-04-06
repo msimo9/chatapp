@@ -14,10 +14,12 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-input-emoji": "^4.1.0",
+    "react-modal": "^3.14.4",
     "react-native-safe-area-context": "^4.1.2",
     "react-native-screens": "^3.13.1",
     "react-redux": "^7.2.6",
     "react-scripts": "5.0.0",
+    "use-file-picker": "^1.4.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

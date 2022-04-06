@@ -11,7 +11,7 @@ const Home = () => {
     >
         {
             friendsList.length === 0
-            ? "No firends found :("
+            ? "No friends found :("
             : null
         }
         {/*
