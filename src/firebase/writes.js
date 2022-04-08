@@ -1,11 +1,12 @@
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, setDoc, updateDoc} from "firebase/firestore"; 
-import { getStorage, ref, uploadBytes} from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 
 import { app } from "./firebase";
 import { db } from "./firebase";
 import { storage } from "./firebase";
+import { readProfilePhotoURL } from "./reads";
 
 
 
@@ -49,7 +50,7 @@ export const handleSaveAdditionalInfo = async (userID, email, username, fullName
       });
 }
 
-export const handleUpdateUserInfo = async (userID, fullName, username, email, birthDate, toggleChangesMade) => {
+export const handleUpdateUserInfo = async (userID, fullName, username, email, birthDate, toggleChangesMade, image) => {
     const userRef = doc(db, "userInfo", userID);
 
     await updateDoc(userRef, {
@@ -58,19 +59,17 @@ export const handleUpdateUserInfo = async (userID, fullName, username, email, bi
         email: email,
         birthDate: birthDate,
     });
-
+    uploadProfilePhoto(image);
     toggleChangesMade();
 
 }
 
 export const uploadProfilePhoto = (image) => {
-    const storageRef = ref(storage, "profilePhoto");
-    try{
+    const storageRef = ref(storage, 'profilePhoto');
+
     // 'file' comes from the Blob or File API
     uploadBytes(storageRef, image).then((snapshot) => {
-    console.log('Uploaded a blob or file!');
+        console.log('Uploaded a blob or file!');
+        readProfilePhotoURL();
     });
-    }catch(e){
-        console.log(e);
-    }
 }

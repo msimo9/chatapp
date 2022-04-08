@@ -1,7 +1,8 @@
 import { app, db } from "./firebase";
 import { collection, getDocs, doc, getDoc} from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { storage } from "./firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 
 export const handleLogin = (username, password, toggleLoginVis, saveUserID) =>{
     const auth = getAuth();
@@ -44,4 +45,14 @@ export const getUserData = async(userID, saveUserData, toggleDataReady) => {
   } else {
     console.log("No such document!");
   }
+}
+
+export const readProfilePhotoURL = (setProfilePhoto) => {
+  getDownloadURL(ref(storage, 'profilePhoto'))
+  .then((url) => {
+    setProfilePhoto(url);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 }
