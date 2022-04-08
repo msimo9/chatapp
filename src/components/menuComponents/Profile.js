@@ -53,7 +53,7 @@ const EditProfile = ({toggleEditProfile, toggleChangesMade, fullName, username, 
             </div>
 
             <input type="file" onChange={(e)=>{setImage(e.target.files[0])}}/>
-            <span onClick={() => uploadProfilePhoto(image)}>upload</span>
+            <span onClick={() => upload()}>upload</span>
 
             <div className='group hover:w-36 py-[2px] transition-all duration-700 hover:bg-secondary mt-4 rounded-3xl justify-center items-center flex hover:cursor-pointer' onClick={() => {handleUpdateUserInfo(userID, fn, un, em, bd, toggleChangesMade); toggleEditProfile();}}>
                 <FaCheckCircle className='text-2xl group-hover:scale-0 relative group-hover:absolute'/>

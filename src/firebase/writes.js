@@ -64,7 +64,7 @@ export const handleUpdateUserInfo = async (userID, fullName, username, email, bi
 }
 
 export const uploadProfilePhoto = (image) => {
-    const storageRef = ref(storage, "profilePhotos");
+    const storageRef = ref(storage, "profilePhoto");
     try{
     // 'file' comes from the Blob or File API
     uploadBytes(storageRef, image).then((snapshot) => {
