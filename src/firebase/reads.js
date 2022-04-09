@@ -47,12 +47,26 @@ export const getUserData = async(userID, saveUserData, toggleDataReady) => {
   }
 }
 
-export const readProfilePhotoURL = (setProfilePhoto) => {
-  getDownloadURL(ref(storage, 'profilePhoto'))
-  .then((url) => {
-    setProfilePhoto(url);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+export const readProfilePhotoURL = (userID, setProfilePhoto, toggleChangesMade) => {
+  if(userID !== undefined){
+    const pathRef = '/userData/'+userID+'/profilePhoto';
+    getDownloadURL(ref(storage, pathRef))
+    .then((url) => {
+      setProfilePhoto(url);
+      toggleChangesMade();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+}
+
+export const getAddedFriends = async (userID, setMyFriends) => {
+  const docRef = doc(db, "userInfo", userID);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    setMyFriends(docSnap.data().addedFriends);
+  } else {
+    console.log("No such document!");
+  }
 }

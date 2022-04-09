@@ -59,12 +59,12 @@ const Profile = () => {
     const toggleChangesMade = () => {setChangesMade(!changesMade);}
 
     const[profilePhoto, setProfilePhoto] = useState("");
-    console.log(profilePhoto);
 
     useEffect(() =>{
         getUserData(userID, setUserData, toggleDataReady);
-        readProfilePhotoURL(setProfilePhoto);
     }, []);
+
+    if(userID !== undefined) readProfilePhotoURL(userID, setProfilePhoto, toggleChangesMade);
 
     useEffect(() => {
     }, [profilePhoto])
