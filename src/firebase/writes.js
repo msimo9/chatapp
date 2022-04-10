@@ -47,6 +47,9 @@ export const handleSaveAdditionalInfo = async (userID, email, username, fullName
         username: username,
         fullName: fullName,
         birthDate: birthDate,
+        addedFriends: [],
+        friendRequest: [],
+        sentFriendRequest: [],
       });
 }
 
@@ -92,15 +95,29 @@ export const uploadProfilePhoto = (userID, image) => {
 }
 
 export const addFriend = async (userID, friendID) => {
-    const userRef = doc(db, "userInfo", userID);
+    //friend field
+    const userRef = doc(db, "userInfo", friendID);
     await updateDoc(userRef, {
-        addedFriends: arrayUnion(friendID)
+        friendRequest: arrayUnion(userID)
+    });
+
+    //user field
+    const userRef2 = doc(db, "userInfo", userID);
+    await updateDoc(userRef2, {
+        sentFriendRequest: arrayUnion(friendID)
     });
 }
 
 export const removeFriend = async (userID, friendID) => {
-    const userRef = doc(db, "userInfo", userID);
+    //friend field
+    const userRef = doc(db, "userInfo", friendID);
     await updateDoc(userRef, {
-        addedFriends: arrayRemove(friendID)
+        friendRequest: arrayRemove(userID)
+    });
+
+    //user field
+    const userRef2 = doc(db, "userInfo", userID);
+    await updateDoc(userRef2, {
+        sentFriendRequest: arrayRemove(friendID)
     });
 }

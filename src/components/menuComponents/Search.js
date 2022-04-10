@@ -37,8 +37,8 @@ const Search = () => {
       setFilteredUsers(users);
     }else{
       let tempArr = users.filter(item => {
-        if(item.fullName.toLowerCase().startsWith(filter.toLowerCase()) || item.username.toLowerCase().startsWith(filter.toLowerCase()) && item.userID !== userID && userID !== undefined ){
-            return true;
+        if(item.fullName.toLowerCase().startsWith(filter.toLowerCase()) && item.userID !== userID && userID !== undefined || item.username.toLowerCase().startsWith(filter.toLowerCase()) && item.userID !== userID && userID !== undefined ){
+          return true;
         }
         return false;
       });
