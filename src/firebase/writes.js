@@ -121,3 +121,43 @@ export const removeFriend = async (userID, friendID) => {
         sentFriendRequest: arrayRemove(friendID)
     });
 }
+
+export const approveFriendRequest = async(userID, friendID, toggleChangesMade) => {
+    //remove from requests
+    //friend field
+    const userRef1 = doc(db, "userInfo", friendID);
+    await updateDoc(userRef1, {
+        friendRequest: arrayRemove(userID)
+    });
+
+    //user field
+    const userRef2 = doc(db, "userInfo", userID);
+    await updateDoc(userRef2, {
+        sentFriendRequest: arrayRemove(friendID)
+    });
+
+    //user field
+    const userRef3 = doc(db, "userInfo", userID);
+    await updateDoc(userRef3, {
+        friendRequest: arrayRemove(friendID)
+    });
+
+    //add to addedfriends
+    //friend field
+    const userRef4 = doc(db, "userInfo", friendID);
+    await updateDoc(userRef4, {
+        addedFriends: arrayUnion(userID)
+    });
+
+    //user field
+    const userRef5 = doc(db, "userInfo", userID);
+    await updateDoc(userRef5, {
+        addedFriends: arrayUnion(friendID)
+    });
+
+    toggleChangesMade();
+}
+
+export const denyFriendRequest = () => {
+
+}
