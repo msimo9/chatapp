@@ -61,27 +61,22 @@ export const readProfilePhotoURL = (userID, setProfilePhoto, toggleChangesMade) 
   }
 }
 
-export const getAddedFriends = async (userID, setMyFriends) => {
-  const docRef = doc(db, "userInfo", userID);
-  const docSnap = await getDoc(docRef);
-  let arr1 = [];
-  let arr2 = [];
-  let concatenatedArr;
-  if (docSnap.exists()) {
-    arr1 = docSnap.data().addedFriends;
-    arr2 = docSnap.data().sentFriendRequest;
-    concatenatedArr = arr1.concat(arr2);
-    setMyFriends(concatenatedArr);
-  } else {
-    console.log("No such document!");
-  }
-}
-
 export const getFriendRequests = async (userID, setFriendRequests, toggleChangesMade) => {
   const docRef = doc(db, "userInfo", userID);
   const docSnap = await getDoc(docRef);
   if(docSnap.exists()) {
     setFriendRequests(docSnap.data().friendRequest);
+    toggleChangesMade();
+  }else{
+    console.log("No such document");
+  }
+}
+
+export const getAddedFriends = async (userID, setAddedFriends, toggleChangesMade) => {
+  const docRef = doc(db, "userInfo", userID);
+  const docSnap = await getDoc(docRef);
+  if(docSnap.exists()) {
+    setAddedFriends(docSnap.data().addedFriends);
     toggleChangesMade();
   }else{
     console.log("No such document");
