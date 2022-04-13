@@ -1,5 +1,5 @@
 import { app, db } from "./firebase";
-import { collection, getDocs, doc, getDoc} from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where,} from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { storage } from "./firebase";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -81,4 +81,31 @@ export const getAddedFriends = async (userID, setAddedFriends, toggleChangesMade
   }else{
     console.log("No such document");
   }
+}
+
+export const readMessages = async (userID, setSentMessages, setReceivedMessages, setUniqueIDs, toggleChangesMade) => {
+  const q1 = query(collection(db, "messages"), where("senderID", "==", userID));
+  const q2 = query(collection(db, "messages"), where("receiverID", "==", userID));
+
+  let sentArr = [];
+  let receivedArr = [];
+  let friendsIDs = [];
+  
+  const querySnapshot1 = await getDocs(q1);
+  querySnapshot1.forEach((doc) => {
+    sentArr.push(doc.data());
+    friendsIDs.push(doc.data().receiverID);
+  });
+
+  const querySnapshot2 = await getDocs(q2);
+  querySnapshot2.forEach((doc) => {
+    receivedArr(doc.data());
+    friendsIDs.push(doc.data().senderID);
+  });
+
+  const uniqueIDs = [...new Set(friendsIDs)];
+  setUniqueIDs(uniqueIDs);
+  setSentMessages(sentArr);
+  setReceivedMessages(sentArr);
+  toggleChangesMade();
 }

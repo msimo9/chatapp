@@ -30,7 +30,7 @@ const Footer = () => {
     }
 
     return(
-        <div className='w-full h-[10%] bg-primary flex justify-center items-center'>
+        <div className='w-full h-16 bg-primary flex justify-center items-center'>
             
             <input onFocus={() => setEmojiField(false)} value={text} onChange={(e) => setText(e.target.value)} className='bg-secondary w-4/5 h-3/5 shadow-2xl drop-shadow-2xl rounded-3xl hover:rounded-md transition-all duration-300 border-2 border-secondary pl-12 pr-6' type={"text"} placeholder={"enter your message here..."} />
             <div className='w-12 h-12 z-60 relative flex justify-center items-center mx-4 hover:bg-secondary rounded-3xl transition-all duration-300 group hover:cursor-pointer'>

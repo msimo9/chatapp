@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideMenu from './SideMenu'
 import Home from './menuComponents/Home'
 import Messages from './Messages'
@@ -24,6 +24,8 @@ const ActiveMenuDiv = ({selectedMenuItem, signOut}) => {
 
 const ChatApp = ({signOut}) => {
   const selectedMenuItem = useSelector(state =>state.activeMenuElement);
+  const [selectedUser, setSelectedUser] = useState({});
+  const [messages, setMessages] = useState([]);
   useEffect(() => {
 
   }, [selectedMenuItem])
@@ -35,7 +37,7 @@ const ChatApp = ({signOut}) => {
         
         {/*<SideContactMenu />*/}
         
-        {/*<Messages />*/}
+        <Messages />
       </div>
       
     </div>

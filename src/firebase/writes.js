@@ -1,5 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, setDoc, updateDoc, getDoc, arrayUnion, arrayRemove} from "firebase/firestore"; 
+import { doc, setDoc, updateDoc, getDoc, arrayUnion, arrayRemove, collection, addDoc} from "firebase/firestore"; 
 import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 
@@ -160,4 +160,15 @@ export const approveFriendRequest = async(userID, friendID, toggleChangesMade) =
 
 export const denyFriendRequest = () => {
 
+}
+
+export const writeNewMessage = async (senderID, receiverID, textMessage) => {
+    const d = new Date();
+    d.getTime();
+    const docRef = await addDoc(collection(db, "messages"), {
+        senderID: senderID,
+        receiverID: receiverID,
+        textMessage: textMessage,
+        timestamp: d,
+    });
 }
